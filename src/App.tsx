@@ -54,8 +54,8 @@ function App() {
   const [equation, setEquation] = useState("");
   const [x0, setX0] = useState(0);
   const [x1, setX1] = useState(0);
-  const [tol, setTol] = useState(0);
-  const [maxIter, setMaxIter] = useState(0);
+  const [tol, setTol] = useState(0.0001);
+  const [maxIter, setMaxIter] = useState(100);
   const [result, setResult] = useState("");
 
   const secantMethod = (
