@@ -175,7 +175,7 @@ function App() {
 
   return (
     <>
-      <div className=" relative bg-gray-950 h-dvh w-dvw flex  flex-col gap-4 justify-center items-center ">
+      <div className=" relative bg-gray-950  h-screen w-screen flex  flex-col gap-4 justify-center items-center p-6 ">
         <div className=" p-3 bg-gray-900 max-w-sm w-full flex  flex-col gap-2 rounded-3xl text-gray-400">
           <p className=" text-center">Algunos Ejemplos para probar la app</p>
 
