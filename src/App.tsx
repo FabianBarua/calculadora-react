@@ -175,7 +175,7 @@ function App() {
 
   return (
     <>
-      <div className=" relative bg-gray-950  h-screen w-screen flex  flex-col gap-4 justify-center items-center p-6 ">
+      <div className=" relative bg-gray-950 h-dvh w-dvw flex  flex-col gap-4 justify-center items-center p-6 ">
         <div className=" p-3 bg-gray-900 max-w-sm w-full flex  flex-col gap-2 rounded-3xl text-gray-400">
           <p className=" text-center">Algunos Ejemplos para probar la app</p>
 
@@ -321,7 +321,7 @@ function App() {
               </div>
             </div>
 
-            <div className=" gap-2 flex flex-col  flex-1 ">
+            <div className=" gap-2 flex flex-col   ">
               <div className=" w-full flex  gap-2">
                 <label
                   htmlFor="tol"
@@ -334,7 +334,7 @@ function App() {
                   id="tol"
                   value={tol}
                   onChange={(e) => setTol(parseFloat(e.target.value))}
-                  className="  p-2 text-center  w-32 bg-gray-800 rounded-xl text-gray-200"
+                  className="  p-2 text-center  w-24 bg-gray-800 rounded-xl text-gray-200"
                 />
               </div>
 
@@ -350,7 +350,7 @@ function App() {
                   id="maxIter"
                   value={maxIter}
                   onChange={(e) => setMaxIter(parseInt(e.target.value))}
-                  className=" w-32 p-2 text-center  bg-gray-800 rounded-xl text-gray-200"
+                  className="  w-24 p-2 text-center  bg-gray-800 rounded-xl text-gray-200"
                 />
               </div>
             </div>
