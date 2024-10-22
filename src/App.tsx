@@ -87,7 +87,19 @@ function App() {
     return new Function("x", "return " + normalizedEquation + ";");
   };
 
-  const handleCalculate = () => {
+  const handleCalculate = ({
+    equation,
+    x0,
+    x1,
+    tol,
+    maxIter,
+  }: {
+    equation: string;
+    x0: number;
+    x1: number;
+    tol: number;
+    maxIter: number;
+  }) => {
     try {
       const f = parseEquation(equation);
       const root = secantMethod(f, x0, x1, tol, maxIter);
@@ -166,8 +178,13 @@ function App() {
       const input4 = document.getElementById("maxIter") as HTMLInputElement;
       input4.value = maxIter.toString();
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      handleCalculate();
+      handleCalculate({
+        equation,
+        x0,
+        x1,
+        tol,
+        maxIter
+      });
     };
 
     init();
@@ -358,7 +375,9 @@ function App() {
 
           <div className=" flex gap-4 mt-4">
             <button
-              onClick={handleCalculate}
+              onClick={
+                () => handleCalculate({ equation, x0, x1, tol, maxIter })
+              }
               className=" w-full bg-gray-800 text-white py-2 px-4 rounded-xl hover:bg-yellow-600 transition-colors"
             >
               Calcular Raíz
