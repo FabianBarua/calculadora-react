@@ -136,7 +136,11 @@ function App() {
       // get the position of the cursor in the input
       const input = document.getElementById("equation") as HTMLInputElement;
       
-      const cursorPosition = input.selectionStart || 0;
+      const cursorPosition = input.selectionStart;
+
+      if (cursorPosition === null) {
+        return prevEquation + value;
+      }
 
       // split the equation into two parts
       const leftSide = prevEquation.slice(0, cursorPosition);
