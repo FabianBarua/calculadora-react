@@ -132,7 +132,25 @@ function App() {
   };
 
   const addToEquation = (value: string) => {
-    setEquation((prevEquation) => prevEquation + value);
+    setEquation((prevEquation) => {
+      // get the position of the cursor in the input
+      const input = document.getElementById("equation") as HTMLInputElement;
+      
+      const cursorPosition = input.selectionStart || 0;
+
+      // split the equation into two parts
+      const leftSide = prevEquation.slice(0, cursorPosition);
+      const rightSide = prevEquation.slice(cursorPosition);
+
+
+      // add the value to the equation
+      return leftSide + value + rightSide;
+    });
+
+    const input = document.getElementById("equation") as HTMLInputElement;
+    input.focus();
+
+
   };
 
   const handleInputChange = (e: { target: { value: any } }) => {
@@ -258,6 +276,7 @@ function App() {
           {/* Campo de texto para ingresar la ecuación */}
           <div className=" flex gap-2   h-12 ">
             <input
+              id="equation"
               type="text"
               value={equation}
               onChange={handleInputChange}
