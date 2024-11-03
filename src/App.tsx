@@ -17,6 +17,14 @@ const specialButtons = [
     label: 'e'
   },
   {
+    key: 'sin',
+    label: 'sin'
+  },
+  {
+    key: 'cos',
+    label: 'cos'
+  },
+  {
     key: '(',
     label: '('
   },
@@ -47,6 +55,18 @@ const specialButtons = [
   {
     key: '.',
     label: '.'
+  },
+  {
+    key: 'e',
+    label: 'e'
+  },
+  {
+    key: 'log(',
+    label: 'log'
+  },
+  {
+    key: 'ln(',
+    label: 'ln'
   }
 ]
 
@@ -95,7 +115,7 @@ function App () {
       const f = parseEquation(equation)
       const { root, steps } = secantMethod(f, x0, x1, tol, maxIter)
       setResult(`${root.toFixed(6)}`)
-      setSteps(steps) // Guarda los pasos
+      setSteps(steps)
     } catch (error) {
       if (error instanceof Error) {
         setResult(error.message)
@@ -113,7 +133,7 @@ function App () {
     maxIter: number
   ) => {
     let x2
-    const steps = [] // Array para almacenar los pasos
+    const steps = []
 
     for (let i = 0; i < maxIter; i++) {
       const f0 = f(x0)
@@ -121,7 +141,6 @@ function App () {
 
       x2 = x1 - (f1 * (x1 - x0)) / (f1 - f0)
 
-      // Agrega el paso actual al array de pasos
       steps.push({
         iteration: i + 1,
         x0: x0.toFixed(6),
@@ -148,12 +167,17 @@ function App () {
       /(\d+(\.\d+)?)([xX])/g,
       '$1*$3'
     )
+    normalizedEquation = normalizedEquation.replace(/π/g, `(${Math.PI})`) // Reemplaza π
+    normalizedEquation = normalizedEquation.replace(/\be\b/g, `(${Math.E})`) // Reemplaza e
+    normalizedEquation = normalizedEquation.replace(/log\(/g, 'Math.log10(') // Reemplaza log para base 10
+    normalizedEquation = normalizedEquation.replace(/ln\(/g, 'Math.log(') // Reemplaza ln para logaritmo natural
+
+    normalizedEquation = normalizedEquation.replace(/\b(sin|cos)\b/g, 'Math.$1') // Reemplaza sin y cos
 
     return new Function('x', 'return ' + normalizedEquation + ';')
   }
 
   const handleClear = () => {
-    // get element by id
     const input = document.getElementById('x0') as HTMLInputElement
     input.value = ''
 
@@ -172,20 +196,16 @@ function App () {
 
   const addToEquation = (value: string) => {
     setEquation((prevEquation: string) => {
-      // get the position of the cursor in the input
       const input = document.getElementById('equation') as HTMLInputElement
-
       const cursorPosition: number | null = input.selectionStart
 
       if (cursorPosition === null) {
         return prevEquation + value
       }
 
-      // split the equation into two parts
       const leftSide: string = prevEquation.slice(0, cursorPosition)
       const rightSide: string = prevEquation.slice(cursorPosition)
 
-      // add the value to the equation
       return leftSide + value + rightSide
     })
 
@@ -195,7 +215,6 @@ function App () {
 
   const handleInputChange = (e: { target: { value: any } }) => {
     const inputValue = e.target.value
-    // Aquí puedes agregar lógica para validar los símbolos permitidos, si es necesario.
     setEquation(inputValue)
   }
 
@@ -223,7 +242,6 @@ function App () {
       setTol(tol)
       setMaxIter(maxIter)
 
-      // get element by id
       const input = document.getElementById('x0') as HTMLInputElement
       input.value = x0.toString()
 
