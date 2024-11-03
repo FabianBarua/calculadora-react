@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { Delete } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const specialButtons = [
   {
@@ -54,6 +54,15 @@ function App () {
   const [equation, setEquation] = useState('')
   const [x0, setX0] = useState(0)
   const [x1, setX1] = useState(0)
+
+  useEffect(() => {
+    console.log('x1:', x1)
+  }, [x1])
+
+  useEffect(() => {
+    console.log('x0:', x0)
+  }, [x0])
+
   const [tol, setTol] = useState(0.0001)
   const [maxIter, setMaxIter] = useState(100)
   const [result, setResult] = useState('')
@@ -348,9 +357,9 @@ function App () {
                         e.target.value.match(/^[0-9.-]+$/) ||
                         e.target.value === ''
                       ) {
-                        setX0(parseFloat(e.target.value))
+                        setX1(parseFloat(e.target.value))
                       } else {
-                        e.target.value = x0.toString()
+                        e.target.value = x1.toString()
                       }
                     }}
                     className=' w-full p-2 text-center max-w-16 bg-gray-800 rounded-xl text-gray-200'
