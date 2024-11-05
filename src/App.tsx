@@ -34,8 +34,25 @@ function App () {
     maxIter
   }: handleCalculateProps) => {
     try {
+      // validar ecuacion
+      if (!equation) {
+        throw new Error('La ecuación ingresada no es válida.')
+      }
+
       const f = parseEquation(equation)
-      if (x0 === 0 && x1 === 0) {
+
+      // Validar la tolerancia y el número máximo de iteraciones
+      if (isNaN(tol) || tol <= 0) {
+        throw new Error('La tolerancia debe ser un número positivo.')
+      }
+      if (isNaN(maxIter) || maxIter <= 0) {
+        throw new Error(
+          'El número máximo de iteraciones debe ser un número entero positivo.'
+        )
+      }
+
+      // Si ambos x0 y x1 son 0, buscar intervalos
+      if (!x0 && !x1) {
         const intervalos = buscarIntervalos(f, -10, 10, 0.5)
         if (intervalos.length > 0) {
           x0 = intervalos[0].x0
@@ -235,15 +252,20 @@ function App () {
 
             <div className=' flex gap-4 mt-4'>
               <button
-                onClick={() =>
+                onClick={() => {
+                  const x0 = parseFloat(x0Ref.current!.value)
+                  const x1 = parseFloat(x1Ref.current!.value)
+                  const tol = parseFloat(tolRef.current!.value)
+                  const maxIter = parseInt(maxIterRef.current!.value)
+
                   handleCalculate({
                     equation,
-                    x0: parseFloat(x0Ref.current!.value),
-                    x1: parseFloat(x1Ref.current!.value),
-                    tol: parseFloat(tolRef.current!.value),
-                    maxIter: parseInt(maxIterRef.current!.value)
+                    x0,
+                    x1,
+                    tol,
+                    maxIter
                   })
-                }
+                }}
                 className=' w-full bg-gray-800 text-white py-2 px-4 rounded-xl hover:bg-yellow-600 transition-colors'
               >
                 Calcular Raíz
