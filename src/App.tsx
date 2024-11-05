@@ -69,6 +69,29 @@ const specialButtons = [
     label: 'ln'
   }
 ]
+const buscarIntervalos = (
+  f: Function,
+  rangoMin: number,
+  rangoMax: number,
+  paso: number
+) => {
+  const intervalos: { x0: number; x1: number }[] = []
+
+  for (let x = rangoMin; x < rangoMax; x += paso) {
+    const fx = f(x)
+    const fxNext = f(x + paso)
+
+    if (fx * fxNext < 0) {
+      intervalos.push({ x0: x, x1: x + paso })
+    }
+  }
+
+  if (intervalos.length === 0) {
+    throw new Error('No se encontraron intervalos con cambios de signo.')
+  }
+
+  return intervalos
+}
 
 function App () {
   const [equation, setEquation] = useState('')
@@ -113,6 +136,20 @@ function App () {
   }) => {
     try {
       const f = parseEquation(equation)
+
+      // Solo buscar intervalos si x0 y x1 no están definidos (cero en este caso)
+      if (x0 === 0 && x1 === 0) {
+        const intervalos = buscarIntervalos(f, -10, 10, 0.5) // Ajusta el rango y paso si es necesario
+
+        // Aquí puedes elegir un intervalo o manejar múltiples
+        if (intervalos.length > 0) {
+          x0 = intervalos[0].x0
+          x1 = intervalos[0].x1
+        } else {
+          throw new Error('No se encontraron intervalos con cambios de signo.')
+        }
+      }
+
       const { root, steps } = secantMethod(f, x0, x1, tol, maxIter)
       setResult(`${root.toFixed(6)}`)
       setSteps(steps)
@@ -323,9 +360,9 @@ function App () {
             {/* Botones especiales */}
 
             <div className=' flex gap-1 mt-4 w-full flex-wrap justify-center'>
-              {specialButtons.map(button => (
+              {specialButtons.map((button, i) => (
                 <button
-                  key={button.key}
+                  key={button.key + i}
                   onClick={() => addToEquation(button.key)}
                   className=' bg-gray-700 hover:bg-yellow-900 transition-colors active:bg-yellow-600 size-10 shrink-0 rounded-xl text-white flex justify-center items-center'
                 >
